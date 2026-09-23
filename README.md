@@ -2,9 +2,10 @@
 
 Retro AI Engineering Challenge — Session 003.
 
-This project is being developed with GitHub Spec Kit and the Codex integration.
-The current phase is project setup and specification preparation. The game choice
-must be approved before the feature specification and implementation are generated.
+This project was developed with GitHub Spec Kit and the Codex integration. Session
+003 implementation and evidence are complete. The current next step is human
+review and instructor approval of the documented title/originality risk before
+submission.
 
 ## Current scope
 
@@ -13,6 +14,15 @@ must be approved before the feature specification and implementation are generat
 - baseline and four repeatable eval cases;
 - one hypothesis-driven controlled change;
 - evidence and AI usage documentation.
+
+## Session 003 validation
+
+- `npm.cmd test` — 42 tests passing;
+- `npm.cmd run typecheck` — passing;
+- `npm.cmd run build` — passing;
+- browser smoke evidence — recorded in `docs/EVALS.md` and `docs/EVIDENCE_003.md`;
+- requirements quality checklist — 20/20 items checked.
+- handoff package — `docs/SESSION_003_HANDOFF.md`.
 
 Session 004 features such as AI Hint, tool calling, live providers, and API
 integration are intentionally not part of this project yet.
@@ -34,3 +44,9 @@ $speckit-converge
 ```
 
 The authoritative project rules are in `.specify/memory/constitution.md`.
+
+## Handoff status
+
+Session 003 is frozen for review. Git commits, branches, resets, and automatic
+Git actions have not been performed. Session 004 features remain excluded until
+the handoff is accepted and the tutor-provided Week 4 tool contract is available.

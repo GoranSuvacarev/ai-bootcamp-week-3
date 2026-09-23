@@ -1,0 +1,97 @@
+# AI Usage Log
+
+## Setup
+
+The setup phase was implemented from the approved Spec Kit plan and was limited
+to tasks T001–T005. No private chain-of-thought, credentials, or external
+provider context was used.
+
+### Commands and results
+
+- `npm.cmd install` — passed; added 52 packages and audited 53 packages. npm
+  reported two moderate severity audit findings and an esbuild install-script
+  approval warning.
+- `npm.cmd run typecheck` — passed with `tsc --noEmit`.
+- `npm.cmd test` — passed with Vitest 3.2.7; no test files exist yet, and the
+  setup script uses `--passWithNoTests` as planned.
+- `npm.cmd run build` — passed with Vite 7.3.6; produced the Vite bundle in
+  `dist/`.
+
+The first typecheck exposed an invalid Vitest config import. The setup fix was
+to import `defineConfig` from `vitest/config`; the complete validation suite was
+then rerun successfully.
+
+## Foundational contract and rules
+
+- Added the shared game types, safe-default configuration, and runtime validator.
+- Added deterministic validation, movement, gravity, jump, and boundary tests.
+- Added the fixed 640×900 level fixture with five platforms and four ladders.
+- `npm.cmd test` — passed: 2 test files and 21 tests.
+- `npm.cmd run typecheck` — passed.
+- `npm.cmd run build` — passed.
+
+## User Story 1
+
+- Added platform landing, grounded jumping, ladder traversal, goal completion,
+  keyboard controls, Canvas rendering, and the browser animation loop.
+- Browser smoke test loaded `http://127.0.0.1:5173/`, showed the required MVP
+  entities and HUD, accepted `ArrowRight`, and produced no console errors after
+  the favicon fix.
+
+## User Story 2
+
+- Added one deterministic rolling hazard and one patrol enemy with fixed bounds.
+- Added collision precedence, one-life damage, respawn, one-second
+  invulnerability, and the terminal `lost` state.
+- Browser smoke testing reached a live collision: lives changed from 03 to 02,
+  the phase stayed `playing`, and the console remained clean.
+
+## User Story 3
+
+- Added three fixed 100-point collectibles with one-time score transitions.
+- Collection rendering hides items after collection and keeps the score HUD in
+  sync with `GameState.score`.
+- Browser smoke testing changed the score from 0000 to 0100 with no console
+  errors; the route also crossed a hazard and reduced lives to 02.
+
+## Baseline, controlled change, and final validation
+
+- Defined four repeatable evaluation cases in `tests/evals.test.ts` and
+  `docs/EVALS.md` before the comparison.
+- Baseline command: `npm.cmd test -- tests/evals.test.ts`.
+- Baseline result: E1, E2, and E3 passed; E4 failed with received velocity 180
+  instead of the configured 60. This reproduced the configuration propagation
+  defect.
+- Controlled change: store validated `GameConfig` in `GameState` and use it for
+  movement speed, jump velocity, gravity, and player boundaries.
+- Post-change command: `npm.cmd test -- tests/evals.test.ts`.
+- Post-change result: all four evaluation cases passed.
+- Full validation: `npm.cmd test` passed with 4 files and 42 tests;
+  `npm.cmd run typecheck` passed; `npm.cmd run build` passed with Vite 7.3.6.
+- Pair contribution record: the Driver implemented and validated the code and
+  evidence; the Observer reviewed the requirements checklist, Core boundary,
+  and reproducibility record. No private chain-of-thought, credentials, or
+  external provider context was used.
+
+## Session 003 handoff review
+
+- Reviewed the course TDD/SDD addendum against the project documents.
+- Updated the README, game specification, build prompt, and context manifest so
+  the handoff records current status, explicit scope boundaries, source priority,
+  stop conditions, and reproducible checks.
+- Confirmed that the title/originality decision remains an instructor-owned
+  approval and was not silently marked as accepted.
+- No source code, gameplay rule, provider, tool-calling flow, backend, or Git
+  state was changed during the handoff documentation pass.
+
+## Post-handoff Core correction
+
+- Added a failing regression for upward ladder selection at a shared platform
+  boundary and tests for the intended alternating edge layout.
+- Changed the five platforms to full-width geometry and positioned ladders at
+  right, left, right, and left edges.
+- Made ladder entry direction-aware while preserving current-ladder movement,
+  downward traversal, and automatic exits.
+- Verified the focused 19-test ladder/layout set, the full 46-test suite,
+  typecheck, build, and browser layout/first-ladder smoke test. The full
+  right-left-right-left route is covered by the deterministic route test.
